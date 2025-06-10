@@ -9,3 +9,4 @@ from .pattern import (
     find_pivots,
     calculate_support_resistance
 )
+
