@@ -1,11 +1,10 @@
 import os
 import sys
-import matplotlib.pyplot as plt
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data import generate_sample_df_with_pattern
-from pattern import detect_head_shoulder
+from src.patterns import detect_head_shoulder
 from plot import plot_head_shoulder
 
 

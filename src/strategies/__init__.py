@@ -1,0 +1,1 @@
+from .head_shoulder import HeadAndShouldersStrategy
