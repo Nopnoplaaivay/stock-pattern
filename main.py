@@ -19,6 +19,6 @@ if __name__ == '__main__':
         # hs_strategy.plot_pattern(candle_data=df, pat=first_hs_pattern)
 
         # plot 5 mẫu hình gần nhất
-        for pat in results["Head and Shoulders"][:10]:
+        for pat in results["Head and Shoulders"][:2]:
             hs_strategy.plot_pattern(candle_data=df, pat=pat)
 
