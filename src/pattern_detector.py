@@ -1,6 +1,6 @@
-from src.base_strategies import BasePatternStrategy
-from src.strategies import HeadAndShouldersStrategy
 import pandas as pd
+
+from src.base_strategies import BasePatternStrategy
 
 class PatternDetector:
     def __init__(self, data: pd.DataFrame):

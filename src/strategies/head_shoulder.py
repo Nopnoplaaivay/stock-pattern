@@ -2,9 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-from lightweight_charts import Chart
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from collections import deque
 
 
@@ -27,7 +25,7 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
         data = raw_data.copy()
         data['date'] = data['date'].astype('datetime64[s]')
         data = data.set_index('date')
-        data = np.log(data)
+        # data = np.log(data)
         return data
 
     def find_patterns(self, data: pd.DataFrame):
