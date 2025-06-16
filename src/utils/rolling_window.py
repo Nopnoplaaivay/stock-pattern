@@ -52,37 +52,3 @@ def rw_extremes(data: np.array, order:int):
             bottoms.append(bottom)
     
     return tops, bottoms
-
-
-
-# if __name__ == "__main__":
-#     data = pd.read_csv('BTCUSDT86400.csv')
-#     data['date'] = data['date'].astype('datetime64[s]')
-#     data = data.set_index('date')
-#
-#     tops, bottoms = rw_extremes(data['close'].to_numpy(), 10)
-#     data['close'].plot()
-#     idx = data.index
-#     for top in tops:
-#         plt.plot(idx[top[1]], top[2], marker='o', color='green')
-#
-#     for bottom in bottoms:
-#         plt.plot(idx[bottom[1]], bottom[2], marker='o', color='red')
-#
-#
-#     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

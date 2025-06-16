@@ -70,33 +70,6 @@ class FlagPennantsStrategy(BasePatternStrategy):
 
         return bull_flags, bear_flags, bull_pennants, bear_pennants
 
-    # def _plot_fp_logic(self, candle_data: pd.DataFrame, pattern: FlagPennantPattern, pad=2):
-    #     if pad < 0:
-    #         pad = 0
-    #
-    #     candle_data = self.transform_data(candle_data)
-    #
-    #     start_i = pattern.base_x - pad
-    #     end_i = pattern.conf_x + 1 + pad
-    #     dat = candle_data.iloc[start_i:end_i]
-    #     idx = dat.index
-    #
-    #     plt.style.use('dark_background')
-    #     fig = plt.gcf()
-    #     ax = fig.gca()
-    #
-    #     tip_idx = idx[pattern.tip_x - start_i]
-    #     conf_idx = idx[pattern.conf_x - start_i]
-    #
-    #     pole_line = [(idx[pattern.base_x - start_i], pattern.base_y), (tip_idx, pattern.tip_y)]
-    #     upper_line = [(tip_idx, pattern.resist_intercept),
-    #                   (conf_idx, pattern.resist_intercept + pattern.resist_slope * pattern.flag_width)]
-    #     lower_line = [(tip_idx, pattern.support_intercept),
-    #                   (conf_idx, pattern.support_intercept + pattern.support_slope * pattern.flag_width)]
-    #
-    #     mpf.plot(dat, alines=dict(alines=[pole_line, upper_line, lower_line], colors=['w', 'b', 'b']), type='candle',
-    #              style='charles', ax=ax)
-    #     plt.show()
 
     def _plot_fp_logic(self, candle_data: pd.DataFrame, pattern: FlagPennantPattern, pad=2):
         if pad < 0:
