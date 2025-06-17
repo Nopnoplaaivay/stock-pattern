@@ -1,0 +1,113 @@
+﻿fieldCode,mapEN,mapVN,descriptionEN,descriptionVN,multiplier,unit
+__id__,,,,,,
+__hashID__,,,,,,
+__createdAt__,,,,,,
+__updatedAt__,,,,,,
+date,,,DATE,NGÀY,,
+paramDate,,,,param trong request lên FiinX,,
+id,,,,,,
+ticker,,,TICKER,MÃ,,
+name,,,,tên doanh nghiệp,,
+exchangeCode,,,,sàn,,
+dataType,,,,loại dữ liệu đc request,,
+AveragePrice,Average Price (D),,,Giá trung bình (D),,VND
+Beta2Y,Beta (2 years),,,Beta (2 năm),,Times
+Beta6M,Beta (6 months),,,Beta (6 tháng),,Times
+CeilingPrice,Ceiling (D),,,Giá trần (D),,VND
+close,Close Price (D),,,Giá đóng cửa (D),,VND
+FloorPrice,Floor (D),,,Giá sàn (D),,VND
+ForeignBuyValueDeal,Foreign Buy Deal Value (D),,,Giá trị NĐTNN mua thỏa thuận (D),,VND
+ForeignBuyValueMatched,Foreign Buy Matched Value (D),,,Giá trị NĐTNN mua khớp lệnh (D),,VND
+ForeignBuyValueTotal,Total Foreign Buy Value (D),,,Giá trị NĐTNN mua (D),,VND
+ForeignBuyVolumeDeal,Foreign Buy Deal Volume (D),,,Khối lượng NĐTNN mua thỏa thuận (D),,Shares
+ForeignBuyVolumeMatched,Foreign Buy Matched Volume (D),,,Khối lượng NĐTNN mua khớp lệnh (D),,Shares
+ForeignBuyVolumeTotal,Total Foreign Buy Volume (D),,,Khối lượng  NĐTNN mua (D),,Shares
+ForeignIndividualBuyDealValue,Foreign Individual Buy Deal Value (D),,,Tổng GTGD cá nhân nước ngoài mua thỏa thuận (D),,VND
+ForeignIndividualBuyDealVolume,Foreign Individual Buy Deal Volume (D),,,Tổng KLGD cá nhân nước ngoài mua thỏa thuận (D),,Shares
+ForeignIndividualBuyMatchValue,Foreign Individual Buy Match Value (D),,,Tổng GTGD cá nhân nước ngoài mua khớp lệnh (D),,VND
+ForeignIndividualBuyMatchVolume,Foreign Individual Buy Match Volume (D),,,Tổng KLGD cá nhân nước ngoài mua khớp lệnh (D),,Shares
+ForeignIndividualBuyValue,Foreign Individual Buy Value (D),,,GTGD cá nhân nước ngoài mua (D),,VND
+ForeignIndividualBuyVolume,Foreign Individual Buy Volume (D),,,KLGD cá nhân nước ngoài mua (D),,Shares
+ForeignIndividualSellDealValue,Foreign Individual Sell Deal Value (D),,,Tổng GTGD cá nhân nước ngoài bán thỏa thuận (D),,VND
+ForeignIndividualSellDealVolume,Foreign Individual Sell Deal Volume (D),,,Tổng KLGD cá nhân nước ngoài bán thỏa thuận (D),,Shares
+ForeignIndividualSellMatchValue,Foreign Individual Sell Match Value (D),,,Tổng GTGD cá nhân nước ngoài bán khớp lệnh (D),,VND
+ForeignIndividualSellMatchVolume,Foreign Individual Sell Match Volume (D),,,Tổng KLGD cá nhân nước ngoài bán khớp lệnh (D),,Shares
+ForeignIndividualSellValue,Foreign Individual Sell Value (D),,,GTGD cá nhân nước ngoài bán (D),,VND
+ForeignIndividualSellVolume,Foreign Individual Sell Volume (D),,,KLGD cá nhân nước ngoài bán (D),,Shares
+ForeignIndividualValue,Foreign Individual Value (D),,,GTGD cá nhân nước ngoài (D),,VND
+ForeignIndividualVolume,Foreign Individual Volume (D),,,KLGD cá nhân nước ngoài (D),,Shares
+ForeignInstitutionalBuyDealValue,Foreign Institutional Buy Deal Value (D),,,Tổng GTGD tổ chức nước ngoài mua thỏa thuận (D),,VND
+ForeignInstitutionalBuyDealVolume,Foreign Institutional Buy Deal Volume (D),,,Tổng KLGD tổ chức nước ngoài mua thỏa thuận (D),,Shares
+ForeignInstitutionalBuyMatchValue,Foreign Institutional Buy Match Value (D),,,Tổng GTGD tổ chức nước ngoài mua khớp lệnh (D),,VND
+ForeignInstitutionalBuyMatchVolume,Foreign Institutional Buy Match Volume (D),,,Tổng KLGD tổ chức nước ngoài mua khớp lệnh (D),,Shares
+ForeignInstitutionalBuyValue,Foreign Institutional Buy Value (D),,,GTGD tổ chức nước ngoài mua (D),,VND
+ForeignInstitutionalBuyVolume,Foreign Institutional Buy Volume (D),,,KLGD tổ chức nước ngoài mua (D),,Shares
+ForeignInstitutionalSellDealValue,Foreign Institutional Sell Deal Value (D),,,Tổng GTGD tổ chức nước ngoài bán thỏa thuận (D),,VND
+ForeignInstitutionalSellDealVolume,Foreign Institutional Sell Deal Volume (D),,,Tổng KLGD tổ chức nước ngoài bán thỏa thuận (D),,Shares
+ForeignInstitutionalSellMatchValue,Foreign Institutional Sell Match Value (D),,,Tổng GTGD tổ chức nước ngoài bán khớp lệnh (D),,VND
+ForeignInstitutionalSellMatchVolume,Foreign Institutional Sell Match Volume (D),,,Tổng KLGD tổ chức nước ngoài bán khớp lệnh (D),,Shares
+ForeignInstitutionalSellValue,Foreign Institutional Sell Value (D),,,GTGD tổ chức nước ngoài bán (D),,VND
+ForeignInstitutionalSellVolume,Foreign Institutional Sell Volume (D),,,KLGD tổ chức nước ngoài bán (D),,Shares
+ForeignInstitutionalValue,Foreign Institutional Value (D),,,GTGD tổ chức nước ngoài (D),,VND
+ForeignInstitutionalVolume,Foreign Institutional Volume (D),,,KLGD tổ chức nước ngoài (D),,Shares
+ForeignSellValueDeal,Foreign Sell Deal Value (D),,,Giá trị NĐTNN bán thỏa thuận (D),,VND
+ForeignSellValueMatched,Foreign Sell Matched Value (D),,,Giá trị NĐTNN bán khớp lệnh (D),,VND
+ForeignSellValueTotal,Total Foreign Sell Value (D),,,Giá trị NĐTNN bán (D),,VND
+ForeignSellVolumeDeal,Foreign Sell Deal Volume (D),,,Khối lượng NĐTNN bán thỏa thuận (D),,Shares
+ForeignSellVolumeMatched,Foreign Sell Matched Volume (D),,,Khối lượng NĐTNN bán khớp lệnh (D),,Shares
+ForeignSellVolumeTotal,Total Foreign Sell Volume (D),,,Khối lượng NĐTNN bán (D),,Shares
+HighPrice,Highest (D),,,Giá cao nhất (D),,VND
+LocalIndividualBuyDealValue,Local Individual Buy Deal Value (D),,,Tổng GTGD cá nhân trong nước mua thỏa thuận (D),,VND
+LocalIndividualBuyDealVolume,Local Individual Buy Deal Volume (D),,,Tổng KLGD cá nhân trong nước mua thỏa thuận (D),,Shares
+LocalIndividualBuyMatchValue,Local Individual Buy Match Value (D),,,Tổng GTGD cá nhân trong nước mua khớp lệnh (D),,VND
+LocalIndividualBuyMatchVolume,Local Individual Buy Match Volume (D),,,Tổng KLGD cá nhân trong nước mua khớp lệnh (D),,Shares
+LocalIndividualBuyValue,Local Individual Buy Value (D),,,GTGD cá nhân trong nước mua (D),,VND
+LocalIndividualBuyVolume,Local Individual Buy Volume (D),,,KLGD cá nhân trong nước mua (D),,Shares
+LocalIndividualSellDealValue,Local Individual Sell Deal Value (D),,,Tổng GTGD cá nhân trong nước bán thỏa thuận (D),,VND
+LocalIndividualSellDealVolume,Local Individual Sell Deal Volume (D),,,Tổng KLGD cá nhân trong nước bán thỏa thuận (D),,Shares
+LocalIndividualSellMatchValue,Local Individual Sell Match Value (D),,,Tổng GTGD cá nhân trong nước bán khớp lệnh (D),,VND
+LocalIndividualSellMatchVolume,Local Individual Sell Match Volume (D),,,Tổng KLGD cá nhân trong nước bán khớp lệnh (D),,Shares
+LocalIndividualSellValue,Local Individual Sell Value (D),,,GTGD cá nhân trong nước bán (D),,VND
+LocalIndividualSellVolume,Local Individual Sell Volume (D),,,KLGD cá nhân trong nước bán (D),,Shares
+LocalIndividualValue,Local Individual Value (D),,,GTGD cá nhân trong nước (D),,VND
+LocalIndividualVolume,Local Individual Volume (D),,,KLGD cá nhân trong nước (D),,Shares
+LocalInstitutionalBuyDealValue,Local Institutional Buy Deal Value (D),,,Tổng GTGD tổ chức trong nước mua thỏa thuận (D),,VND
+LocalInstitutionalBuyDealVolume,Local Institutional Buy Deal Volume (D),,,Tổng KLGD tổ chức trong nước mua thỏa thuận (D),,Shares
+LocalInstitutionalBuyMatchValue,Local Institutional Buy Match Value (D),,,Tổng GTGD tổ chức trong nước mua khớp lệnh (D),,VND
+LocalInstitutionalBuyMatchVolume,Local Institutional Buy Match Volume (D),,,Tổng KLGD tổ chức trong nước mua khớp lệnh (D),,Shares
+LocalInstitutionalBuyValue,Local Institutional Buy Value (D),,,GTGD tổ chức trong nước mua (D),,VND
+LocalInstitutionalBuyVolume,Local Institutional Buy Volume (D),,,KLGD tổ chức trong nước mua (D),,Shares
+LocalInstitutionalSellDealValue,Local Institutional Sell Deal Value (D),,,Tổng GTGD tổ chức trong nước bán thỏa thuận (D),,VND
+LocalInstitutionalSellDealVolume,Local Institutional Sell Deal Volume (D),,,Tổng KLGD tổ chức trong nước bán thỏa thuận (D),,Shares
+LocalInstitutionalSellMatchValue,Local Institutional Sell Match Value (D),,,Tổng GTGD tổ chức trong nước bán khớp lệnh (D),,VND
+LocalInstitutionalSellMatchVolume,Local Institutional Sell Match Volume (D),,,Tổng KLGD tổ chức trong nước bán khớp lệnh (D),,Shares
+LocalInstitutionalSellValue,Local Institutional Sell Value (D),,,GTGD tổ chức trong nước bán (D),,VND
+LocalInstitutionalSellVolume,Local Institutional Sell Volume (D),,,KLGD tổ chức trong nước bán (D),,Shares
+LocalInstitutionalValue,Local Institutional Value (D),,,GTGD tổ chức trong nước (D),,VND
+LocalInstitutionalVolume,Local Institutional Volume (D),,,KLGD tổ chức trong nước (D),,Shares
+LowPrice,Lowest (D),,,Giá thấp nhất (D),,VND
+open,Open (D),,,Giá mở cửa (D),,VND
+ReferencePrice,Reference (D),,,Giá tham chiếu (D),,VND
+TotalBidCount,Total Buy Trade Orders (D),,,Số lệnh đặt mua (D),,
+TotalBidVolume,Total Buy Trade Volume (D),,,Khối lượng đặt mua (D),,Shares
+TotalBuyValue,TotalProprietary Buy Value (D),,,Giá trị tự doanh mua (D),,VND
+TotalBuyVolume,Total Proprietary Buy Volume (D),,,Khối lượng tự doanh mua (D),,Shares
+TotalDealBuyValue,Proprietary Buy Deal Value (D),,,Giá trị tự doanh mua thỏa thuận (D),,VND
+TotalDealBuyVolume,Proprietary Buy Deal Volume (D),,,Khối lượng tự doanh mua thỏa thuận (D),,Shares
+TotalDealSellValue,Proprietary Sell Deal Value (D),,,Giá trị tự doanh bán thỏa thuận (D),,VND
+TotalDealSellVolume,Proprietary Sell Deal Volume (D),,,Khối lượng tự doanh bán thỏa thuận (D),,Shares
+TotalDealValue,Put-through Value (D),,,Giá trị thỏa thuận (D),,VND
+TotalDealVolume,Put-through Volume (D),,,Khối lượng thỏa thuận (D),,Shares
+TotalMatchBuyValue,Proprietary Buy Matched Value (D),,,Giá trị tự doanh mua khớp lệnh (D),,VND
+TotalMatchBuyVolume,Proprietary Buy Matched Volume (D),,,Khối lượng tự doanh mua khớp lệnh (D),,Shares
+TotalMatchSellValue,Proprietary Sell Matched Value (D),,,Giá trị tự doanh bán khớp lệnh (D),,VND
+TotalMatchSellVolume,Proprietary Sell Matched Volume (D),,,Khối lượng tự doanh bán khớp lệnh (D),,Shares
+TotalMatchValue,Matching Value (D),,,Giá trị khớp lệnh (D),,VND
+TotalMatchVolume,Matching Volume (D),,,Khối lượng khớp lệnh (D),,Shares
+TotalOfferCount,Total Sell Trade Orders (D),,,Số lệnh đặt bán (D),,
+TotalOfferVolume,Total Sell Trade Volume (D),,,Khối lượng đặt bán (D),,Shares
+TotalSellValue,Total Proprietary Sell Value (D),,,Giá trị tự doanh bán (D),,VND
+TotalSellVolume,Total Proprietary Sell Volume (D),,,Khối lượng tự doanh bán (D),,Shares
+TotalValue,Total trading value (D),,,Tổng giá trị giao dịch (D),,VND
+TotalVolume,Total trading volume (D),,,Tổng khối lượng giao dịch (D),,Shares
+RateAdjusted,Adjusted Rate (D),,,,100,%

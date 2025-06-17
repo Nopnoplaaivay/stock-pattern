@@ -1,0 +1,1 @@
+from .trading_data_daily import TradingDataDailyRepo

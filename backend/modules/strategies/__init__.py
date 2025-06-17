@@ -1,0 +1,2 @@
+from .head_shoulder import HeadAndShouldersStrategy
+from .flag_pennants import FlagPennantsStrategy

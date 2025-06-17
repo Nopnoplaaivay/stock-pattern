@@ -1,35 +1,32 @@
 import pandas as pd
 
-from src.strategies import HeadAndShouldersStrategy, FlagPennantsStrategy, DoubleTopStrategy
-from src.pattern_detector import PatternDetector
-
+from backend.modules.data_explorer.corporate.repositories import TradingDataDailyRepo
+from backend.modules.strategies import HeadAndShouldersStrategy
+from backend.modules.pattern_detector import PatternDetector
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/BTCUSDT3600.csv')
+    stock = "BSI"
+    raw_data = TradingDataDailyRepo.get_by_condition({"ticker": stock})
+    df = pd.DataFrame(raw_data)
+    df = df[["paramDate", "OpenPrice", "HighPrice", "LowPrice", "ClosePrice"]].copy().dropna()
+    df["date"] = pd.to_datetime(df["paramDate"])
+    df = df.set_index("date")
+    df = df.sort_index()
+    df = df.rename(columns={"OpenPrice": "open", "HighPrice": "high", "LowPrice": "low", "ClosePrice": "close"})
+
 
     detector = PatternDetector(df)
     detector.add_strategy(HeadAndShouldersStrategy(order=6))
-    detector.add_strategy(FlagPennantsStrategy(order=12))
-    # detector.add_strategy(DoubleTopStrategy(order=6))
 
     results = detector.run()
 
     if "Head and Shoulders" in results:
         first_hs_pattern = results["Head and Shoulders"][0]
         hs_strategy = [s for s in detector.strategies if s.name == "Head and Shoulders"][0]
-        pat = results["Head and Shoulders"][0]
-        hs_strategy.plot_pattern(candle_data=df, pat=pat)
+        pat = results["Head and Shoulders"][1]
+        for i, p in enumerate(results["Head and Shoulders"]):
+            print(f"Pattern {i}: {p}")
+            hs_strategy.plot_pattern(candle_data=df, pat=p)
 
-    if "Flag Pennants" in results:
-        first_fp_pattern = results["Flag Pennants"][0]
-        fp_strategy = [s for s in detector.strategies if s.name == "Flag Pennants"][0]
-        pat = results["Flag Pennants"][0]
-        fp_strategy.plot_pattern(candle_data=df, pat=pat)
-
-    if "Double Top" in results:
-        first_dt_pattern = results["Double Top"][0]
-        dt_strategy = [s for s in detector.strategies if s.name == "Double Top"][0]
-        pat = results["Double Top"][-1]
-        dt_strategy.plot_pattern(candle_data=df, pat=pat)
 
