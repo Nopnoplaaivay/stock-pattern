@@ -6,6 +6,7 @@ import ast
 
 class Consts:
     BASE_DIR = os.path.abspath(os.path.join(__file__, "../" * 3))
+    TMP_DIR = os.path.join(BASE_DIR, "tmp")
     DATABASE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
     DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
     DATE_FORMAT = "%Y-%m-%d"
