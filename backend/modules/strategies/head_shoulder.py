@@ -1,9 +1,12 @@
+import os
+
 import pandas as pd
 import numpy as np
+import re
 import plotly.graph_objects as go
 from collections import deque
 
-
+from backend.common.consts import Consts
 from backend.modules.patterns import HSPattern
 from backend.modules.base_strategies import BasePatternStrategy
 from backend.utils.rolling_window import rw_top, rw_bottom
@@ -116,8 +119,13 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
 
         candle_data = self.transform_data(candle_data)
 
+        ticker = candle_data['ticker'].iloc[0]
+
         idx = candle_data.index
         data = candle_data.iloc[pat.start_i:pat.break_i + 1 + pad]
+
+        # Get neck_end date
+        neck_end_date = idx[pat.break_i]
 
         # Tạo figure với tỷ lệ đẹp (chỉ price chart)
         fig = go.Figure()
@@ -280,5 +288,10 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
             showarrow=False,
             font=dict(size=10, color="rgba(255,255,255,0.3)")
         )
+        # Save the figure to a file
+        sanitized_date = re.sub(r'[^\w\-_\. ]', '_', str(neck_end_date))
 
-        fig.show()
+        # Use the sanitized date in the filename
+        plot_dir = f"{Consts.TMP_DIR}/{ticker}"
+        os.makedirs(plot_dir, exist_ok=True)
+        fig.write_image(f"{plot_dir}/HS_{sanitized_date}.png")
