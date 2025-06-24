@@ -73,23 +73,18 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     # neckline value at current index
     neck_val = data[l_armpit] + (i - l_armpit) * neck_slope
 
-    # Confirm pattern when price is halfway from right shoulder
     if early_find:
         if data[i] > r_midpoint:
             return None
     else:
-
-        # Price has yet to break neckline, unconfirmed
         if data[i] > neck_val:
             return None
 
-    # Find beginning of pattern. Neck to left shoulder
     head_width = r_armpit - l_armpit
     pat_start = -1
     neck_start = -1
     for j in range(1, head_width):
         neck = data[l_armpit] + (l_shoulder - l_armpit - j) * neck_slope
-
         if l_shoulder - j < 0:
             return None
 
@@ -101,7 +96,6 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     if pat_start == -1:
         return None
 
-    # Pattern confirmed if here :)
     pat = HSPattern(inverted=False)
 
     pat.l_shoulder = l_shoulder
@@ -127,13 +121,6 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     pat.head_width = head_width
     pat.head_height = data[head] - (data[l_armpit] + (head - l_armpit) * neck_slope)
     pat.pattern_r2 = compute_pattern_r2(data, pat)
-
-    # I experiemented with r-squared as a filter for H&S, but this can delay recognition.
-    # It didn't seem terribly potent, may be useful as a filter in conjunction with other attributes
-    # if one wanted to add a machine learning layer before trading these patterns.
-
-    # if pat.pattern_r2 < 0.0:
-    #    return None
 
     return pat
 
