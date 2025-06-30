@@ -28,7 +28,7 @@ def rw_bottom(data: np.array, curr_index: int, order: int) -> bool:
     
     return bottom
 
-def rw_extremes(data: np.array, order:int):
+def rw_extremes(data: np.array, order: int):
     tops = []
     bottoms = []
     for i in range(len(data)):

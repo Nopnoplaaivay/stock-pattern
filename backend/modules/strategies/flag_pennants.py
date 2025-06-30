@@ -21,7 +21,6 @@ class FlagPennantsStrategy(BasePatternStrategy):
     def transform_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         data = raw_data.copy()
         data['date'] = pd.to_datetime(data['paramDate'])
-        # data['date'] = data['paramDate'].astype('datetime64[s]')
         data = data.set_index('date')
         # data = np.log(data)
         return data
