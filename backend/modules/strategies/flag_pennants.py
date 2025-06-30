@@ -1,7 +1,9 @@
 import pandas as pd
-import numpy as np
+import os
 import plotly.graph_objects as go
 
+
+from backend.common.consts import Consts
 from backend.modules.patterns import FlagPennantPattern
 from backend.modules.base_strategies import BasePatternStrategy
 from backend.utils.rolling_window import rw_top, rw_bottom
@@ -18,19 +20,20 @@ class FlagPennantsStrategy(BasePatternStrategy):
 
     def transform_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         data = raw_data.copy()
-        data['date'] = data['date'].astype('datetime64[s]')
+        data['date'] = pd.to_datetime(data['paramDate'])
+        # data['date'] = data['paramDate'].astype('datetime64[s]')
         data = data.set_index('date')
-        data = np.log(data)
+        # data = np.log(data)
         return data
 
     def find_patterns(self, data: pd.DataFrame):
-        transformed_data = self.transform_data(raw_data=data)
-        data_slice = transformed_data['close'].to_numpy()
+        # transformed_data = self.transform_data(raw_data=data)
+        data_slice = data['close'].to_numpy()
         bull_flags, bear_flags, bull_pennants, bear_pennants = self._find_fp_logic(data=data_slice)
         return bull_flags + bear_flags + bull_pennants + bear_pennants
 
-    def plot_pattern(self, candle_data: pd.DataFrame, pat: FlagPennantPattern):
-        self._plot_fp_logic(candle_data=candle_data, pattern=pat)
+    def plot_pattern(self, price_df: pd.DataFrame, pat: FlagPennantPattern):
+        self._plot_fp_logic(price_df=price_df, pattern=pat)
 
     def _find_fp_logic(self, data):
         assert (self.order >= 3)
@@ -52,6 +55,7 @@ class FlagPennantsStrategy(BasePatternStrategy):
 
             if pending_bear is not None:
                 if check_bear_pattern_pips(pending_bear, data, i, self.order):
+                    pending_bear.bullish = False
                     if pending_bear.pennant:
                         bear_pennants.append(pending_bear)
                     else:
@@ -60,6 +64,7 @@ class FlagPennantsStrategy(BasePatternStrategy):
 
             if pending_bull is not None:
                 if check_bull_pattern_pips(pending_bull, data, i, self.order):
+                    pending_bull.bullish = True
                     if pending_bull.pennant:
                         bull_pennants.append(pending_bull)
                     else:
@@ -69,39 +74,21 @@ class FlagPennantsStrategy(BasePatternStrategy):
         return bull_flags, bear_flags, bull_pennants, bear_pennants
 
 
-    def _plot_fp_logic(self, candle_data: pd.DataFrame, pattern: FlagPennantPattern, pad=2):
+    def _plot_fp_logic(self, price_df: pd.DataFrame, pattern: FlagPennantPattern, pad=2):
         if pad < 0:
             pad = 0
 
         # Transform data nếu cần thiết (ví dụ log-scale)
-        candle_data = self.transform_data(candle_data)
-
+        # candle_data = self.transform_data(price_df)
+        candle_data = price_df.copy()
+        ticker = candle_data['ticker'].iloc[0]
         idx = candle_data.index
         start_i = pattern.base_x - pad
         end_i = pattern.conf_x + 1 + pad
-        dat = candle_data.iloc[start_i:end_i]
+        candle_data = candle_data.iloc[start_i:end_i]
 
-        fig = go.Figure()
-
-        # === Vẽ nến chính ===
-        fig.add_trace(
-            go.Candlestick(
-                x=dat.index,
-                open=dat['open'],
-                high=dat['high'],
-                low=dat['low'],
-                close=dat['close'],
-                name='Price',
-                increasing_line_color='#26C281',
-                decreasing_line_color='#E74C3C',
-                increasing_fillcolor='rgba(38, 194, 129, 0.6)',
-                decreasing_fillcolor='rgba(231, 76, 60, 0.6)',
-                line=dict(width=1.2)
-            )
-        )
-
-        # === Xác định các đoạn trendline ===
-        base_idx = idx[pattern.base_x]  # Gốc cây cột
+        # Ensure the index is reset for plotting
+        base_idx = idx[pattern.base_x]
         tip_idx = idx[pattern.tip_x]    # Ngọn cây cột
         conf_idx = idx[pattern.conf_x]  # Điểm xác nhận mẫu
 
@@ -114,6 +101,34 @@ class FlagPennantsStrategy(BasePatternStrategy):
         lines = [pole_line, upper_line, lower_line]
         colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
         names = ['Pole Line', 'Resistance Trendline', 'Support Trendline']
+
+        """Update df's label and sessions_num columns"""
+        # bull_flags = 2, bear_flags = -2, bull_pennants = 3, bear_pennants = -3
+        if pattern.pennant:
+            price_df.loc[conf_idx, "label"] = 3 if pattern.bullish else -3
+        else:
+            price_df.loc[conf_idx, "label"] = 2 if pattern.bullish else -2
+        price_df.loc[conf_idx, "sessions_num"] = pattern.conf_x - pattern.base_x + 1
+
+
+        fig = go.Figure()
+
+        # === Vẽ nến chính ===
+        fig.add_trace(
+            go.Candlestick(
+                x=candle_data.index,
+                open=candle_data['open'],
+                high=candle_data['high'],
+                low=candle_data['low'],
+                close=candle_data['close'],
+                name='Price',
+                increasing_line_color='#26C281',
+                decreasing_line_color='#E74C3C',
+                increasing_fillcolor='rgba(38, 194, 129, 0.6)',
+                decreasing_fillcolor='rgba(231, 76, 60, 0.6)',
+                line=dict(width=1.2)
+            )
+        )
 
         # === Vẽ các đường trendline ===
         for line, color, name in zip(lines, colors, names):
@@ -170,7 +185,9 @@ class FlagPennantsStrategy(BasePatternStrategy):
             )
 
         # === Cập nhật layout ===
-        title_text = "🚩 Bullish Flag Pattern" if pattern.tip_y > pattern.base_y else "🔻 Bearish Flag Pattern"
+        title_text = f"{ticker} Bullish Flag Pattern - {conf_idx}" \
+            if pattern.tip_y > pattern.base_y \
+            else f"{ticker} Bearish Flag Pattern - {conf_idx}"
         if pattern.pennant:
             title_text = title_text.replace("Flag", "Pennant")
 
@@ -239,5 +256,10 @@ class FlagPennantsStrategy(BasePatternStrategy):
             showarrow=False,
             font=dict(size=10, color="rgba(255,255,255,0.3)")
         )
+
+        end_date = conf_idx
+        # plot_dir = f"{Consts.TMP_DIR}/{ticker}"
+        # os.makedirs(plot_dir, exist_ok=True)
+        # fig.write_image(f"{plot_dir}/FP_{end_date}.png")
 
         fig.show()

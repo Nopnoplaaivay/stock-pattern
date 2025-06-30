@@ -24,3 +24,5 @@ class FlagPennantPattern:
     support_slope: float = -1.
     resist_intercept: float = -1.
     resist_slope: float = -1.
+
+    bullish: bool = True

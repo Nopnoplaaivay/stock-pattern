@@ -7,3 +7,4 @@ python-dotenv==0.19.1
 urllib3==2.4.0
 Flask==2.2.2
 Werkzeug==2.2.2
+kaleido==0.2.1

@@ -23,22 +23,14 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
     def name(self) -> str:
         return "Head and Shoulders"
 
-    def transform_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
-        data = raw_data.copy()
-        data['date'] = pd.to_datetime(data['paramDate'])
-        # data['date'] = data['paramDate'].astype('datetime64[s]')
-        data = data.set_index('date')
-        # data = np.log(data)
-        return data
-
     def find_patterns(self, data: pd.DataFrame):
-        transformed_data = self.transform_data(raw_data=data)
-        data_slice = transformed_data['close'].to_numpy()
+        # transformed_data = self.transform_data(raw_data=data)
+        data_slice = data['close'].to_numpy()
         hs_patterns, ihs_patterns = self._find_hs_logic(data=data_slice, order=self.order, early_find=self.early_find)
         return hs_patterns + ihs_patterns
 
-    def plot_pattern(self, candle_data: pd.DataFrame, pat: HSPattern):
-        self._plot_hs_logic(candle_data=candle_data, pat=pat)
+    def plot_pattern(self, price_df: pd.DataFrame, pat: HSPattern):
+        self._plot_hs_logic(price_df=price_df, pat=pat)
 
     def _find_hs_logic(self, data: np.array, order: int, early_find: bool = False):
         assert (order >= 1)
@@ -114,31 +106,29 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
 
         return hs_patterns, ihs_patterns
 
-    def _plot_hs_logic(self, candle_data: pd.DataFrame, pat: 'HSPattern', pad: int = 2):
+    def _plot_hs_logic(self, price_df: pd.DataFrame, pat: HSPattern, pad: int = 2):
         if pad < 0:
             pad = 0
 
-        candle_data = self.transform_data(candle_data)
-
+        candle_data = price_df.copy()
         ticker = candle_data['ticker'].iloc[0]
-
         idx = candle_data.index
-        data = candle_data.iloc[pat.start_i:pat.break_i + 1 + pad]
-
-        # Get neck_end date
+        candle_data = candle_data.iloc[pat.start_i:pat.break_i + 1 + pad]
         neck_end_date = idx[pat.break_i]
 
-        # Tạo figure với tỷ lệ đẹp (chỉ price chart)
-        fig = go.Figure()
+        """Update df's label and sessions_num columns."""
+        price_df.loc[neck_end_date, "label"] = 1 if pat.inverted else -1
+        price_df.loc[neck_end_date, "sessions_num"] = pat.break_i - pat.start_i + 1
 
-        # Candlestick chính
+
+        fig = go.Figure()
         fig.add_trace(
             go.Candlestick(
-                x=data.index,
-                open=data['open'],
-                high=data['high'],
-                low=data['low'],
-                close=data['close'],
+                x=candle_data.index,
+                open=candle_data['open'],
+                high=candle_data['high'],
+                low=candle_data['low'],
+                close=candle_data['close'],
                 name='Price',
                 increasing_line_color='#26C281',
                 decreasing_line_color='#E74C3C',
@@ -148,7 +138,6 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
             )
         )
 
-        # Định nghĩa các điểm pattern
         l0 = [(idx[pat.start_i], pat.neck_start), (idx[pat.l_shoulder], pat.l_shoulder_p)]
         l1 = [(idx[pat.l_shoulder], pat.l_shoulder_p), (idx[pat.l_armpit], pat.l_armpit_p)]
         l2 = [(idx[pat.l_armpit], pat.l_armpit_p), (idx[pat.head], pat.head_p)]
@@ -157,7 +146,6 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
         l5 = [(idx[pat.r_shoulder], pat.r_shoulder_p), (idx[pat.break_i], pat.neck_end)]
         neck = [(idx[pat.start_i], pat.neck_start), (idx[pat.break_i], pat.neck_end)]
 
-        # Vẽ các đường pattern với màu sắc gradient
         lines = [l0, l1, l2, l3, l4, l5, neck]
         colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF7675']
         line_names = ['Start→L.Shoulder', 'L.Shoulder→L.Armpit', 'L.Armpit→Head',
@@ -180,7 +168,6 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
                 )
             )
 
-        # Đánh dấu các điểm quan trọng với style đẹp
         key_points_x = [idx[pat.l_shoulder], idx[pat.head], idx[pat.r_shoulder]]
         key_points_y = [pat.l_shoulder_p, pat.head_p, pat.r_shoulder_p]
         key_labels = ['Left Shoulder', 'Head', 'Right Shoulder']
@@ -223,10 +210,9 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
                 font=dict(color='white', size=10)
             )
 
-        # Layout với tỷ lệ vàng và thiết kế hiện đại
         fig.update_layout(
             title=dict(
-                text='🔍 Head and Shoulders Pattern Analysis',
+                text=f'{ticker} Head and Shoulders Pattern - {neck_end_date}',
                 x=0.5,
                 font=dict(size=24, color='white', family='Arial Black')
             ),
@@ -289,20 +275,8 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
             showarrow=False,
             font=dict(size=10, color="rgba(255,255,255,0.3)")
         )
-        # Save the figure to a file
-        sanitized_date = re.sub(r'[^\w\-_\. ]', '_', str(neck_end_date))
 
-<<<<<<< HEAD
-        # save fig
-        stock = candle_data['ticker'].iloc[0]
-        last_date = data.index[-1].strftime("%Y-%m-%d")
-        fig_dir = os.path.join(Consts.TMP_DIR, stock)
-        os.makedirs(fig_dir, exist_ok=True)
-        fig.write_image(f"{fig_dir}/{last_date}.png")
-        # fig.show()
-=======
-        # Use the sanitized date in the filename
-        plot_dir = f"{Consts.TMP_DIR}/{ticker}"
-        os.makedirs(plot_dir, exist_ok=True)
-        fig.write_image(f"{plot_dir}/HS_{sanitized_date}.png")
->>>>>>> 6574f46ce16599ba586514d97a08392cdb002ac4
+        fig.show()
+        # plot_dir = f"{Consts.TMP_DIR}/{ticker}"
+        # os.makedirs(plot_dir, exist_ok=True)
+        # fig.write_image(f"{plot_dir}/HS_{neck_end_date}.png")

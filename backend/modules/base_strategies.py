@@ -8,11 +8,7 @@ class BasePatternStrategy(ABC):
         pass
 
     @abstractmethod
-    def plot_pattern(self, candle_data: pd.DataFrame, pattern_instance):
-        pass
-
-    @abstractmethod
-    def transform_data(self, data: pd.DataFrame) -> pd.DataFrame:
+    def plot_pattern(self, price_df: pd.DataFrame, pat):
         pass
 
     @property
