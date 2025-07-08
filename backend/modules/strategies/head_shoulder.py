@@ -42,8 +42,8 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
         hs_lock = False
         ihs_lock = False
 
-        ihs_patterns = []  # Inverted (bullish)
-        hs_patterns = []  # Regular (bearish)
+        ihs_patterns = []
+        hs_patterns = []
         for i in range(len(data)):
             if rw_top(data, i, order):
                 recent_extrema.append(i - order)

@@ -14,7 +14,7 @@ from backend.modules.pattern_detector import PatternDetector
 
 
 if __name__ == '__main__':
-        stock = "VCB"
+        stock = "AGG"
         print("=" * 50)
         print(f"[PROCESSING] Detecting patterns for stock: {stock}")
         raw_data = TradingDataDailyRepo.get_by_condition({"ticker": stock})
@@ -28,9 +28,9 @@ if __name__ == '__main__':
         df = df.rename(columns={"OpenPrice": "open", "HighPrice": "high", "LowPrice": "low", "ClosePrice": "close"})
 
         detector = PatternDetector(df)
-        detector.add_strategy(HeadAndShouldersStrategy(order=6))
-        detector.add_strategy(FlagPennantsStrategy(order=6))
-        # detector.add_strategy(TripleTopStrategy(order=6))
+        # detector.add_strategy(HeadAndShouldersStrategy(order=6))
+        # detector.add_strategy(FlagPennantsStrategy(order=6))
+        detector.add_strategy(TripleTopStrategy(order=6))
 
         results = detector.run()
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
 
         # export df to csv
-        # df.to_csv(f"{stock}_patterns.csv")
+        df.to_csv(f"tmp/{stock}_patterns.csv")
         print(f"[DONE] Detecting patterns for stock: {stock}")
 
 

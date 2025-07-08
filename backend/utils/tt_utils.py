@@ -5,8 +5,7 @@ from backend.modules.patterns import TripleTopPattern
 
 
 def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_find: bool = False) -> TripleTopPattern:
-    ''' Returns a HSPattern if found, or None if not found '''
-    # Unpack list
+    """ Returns a TripleTopPattern if the pattern is confirmed, otherwise None. """
     l_peak = extrema_indices[0]
     l_trough = extrema_indices[1]
     m_peak = extrema_indices[2]
@@ -17,15 +16,17 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
     # Find right shoulder as max price since r_armpit
     r_peak = r_trough + data[r_trough + 1: i].argmax() + 1
+    if data[r_peak] < data[r_trough] or data[l_peak] < data[l_trough]:
+        return None
 
     # Condition 2
     max_peak = max(data[l_peak], data[r_peak])
     min_peak = min(data[l_peak], data[r_peak])
-    if (max_peak - min_peak) / min_peak > 0.04:
+    if (max_peak - min_peak) / min_peak > 0.04 or data[m_peak] > max_peak:
         return None
 
     # Condition 3
-    if r_trough < l_trough or r_trough > 1.04 * l_trough:
+    if data[r_trough] < data[l_trough] or data[r_trough] > 1.04 * data[l_trough]:
         return None
 
     # Condition 4
@@ -35,9 +36,9 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
         return None
 
     # Compute neckline
-    neck_run = r_peak - l_peak
-    neck_rise = data[r_peak] - data[l_peak]
-    neck_slope = neck_rise / neck_run
+    # neck_run = r_peak - l_peak
+    # neck_rise = data[r_peak] - data[l_peak]
+    # neck_slope = neck_rise / neck_run
 
     # neckline value at current index
     # neck_val = data[l_trough] + (i - l_trough) * neck_slope

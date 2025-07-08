@@ -42,8 +42,8 @@ class TripleTopStrategy(BasePatternStrategy):
         tt_lock = False
         tb_lock = False
 
-        tt_patterns = []  # Inverted (bearish)
-        tb_patterns = []  # Regular (bullish)
+        tb_patterns = []
+        tt_patterns = []
         for i in range(len(data)):
             if rw_top(data, i, order):
                 recent_extrema.append(i - order)
@@ -89,12 +89,12 @@ class TripleTopStrategy(BasePatternStrategy):
             if tb_lock or not tb_alternating:
                 tb_pat = None
             else:
-                tb_pat = check_tt_pattern(tb_extrema, data, i, early_find)
+                tb_pat = check_tb_pattern(tb_extrema, data, i, early_find)
 
             if tt_lock or not tt_alternating:
                 tt_pat = None
             else:
-                tt_pat = check_tb_pattern(tt_extrema, data, i, early_find)
+                tt_pat = check_tt_pattern(tt_extrema, data, i, early_find)
 
             if tt_pat is not None:
                 tt_lock = True
@@ -113,7 +113,7 @@ class TripleTopStrategy(BasePatternStrategy):
         candle_data = price_df.copy()
         ticker = candle_data['ticker'].iloc[0]
         idx = candle_data.index
-        candle_data = candle_data.iloc[pat.start_i:pat.break_i + 1 + pad]
+        candle_data = candle_data.iloc[pat.start_i - 20:pat.break_i + 1 + pad]
         neck_end_date = idx[pat.break_i]
 
         """Update df's label and sessions_num columns."""
