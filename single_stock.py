@@ -14,7 +14,7 @@ from backend.modules.pattern_detector import PatternDetector
 
 
 if __name__ == '__main__':
-        stock = "BAF"
+        stock = "BID"
         print("=" * 50)
         print(f"[PROCESSING] Detecting patterns for stock: {stock}")
         raw_data = TradingDataDailyRepo.get_by_condition({"ticker": stock})
