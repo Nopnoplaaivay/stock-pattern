@@ -141,7 +141,7 @@ def check_tb_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     if pat_start == -1:
         return None
 
-    pat = TripleTopPattern(inverted=False)
+    pat = TripleTopPattern(inverted=True)
 
     pat.l_peak = l_peak
     pat.r_peak = r_peak
