@@ -6,6 +6,8 @@ class HSPattern:
     inverted: bool
 
     # Indices of the parts of the H&S patterns
+    pre_top: int = -1
+    pre_trough: int = -1
     l_shoulder: int = -1
     r_shoulder: int = -1
     l_armpit: int = -1
@@ -13,6 +15,8 @@ class HSPattern:
     head: int = -1
 
     # Price of the parts of the H&S patterns. _p stands for price.
+    pre_top_p: float = -1
+    pre_trough_p: float = -1
     l_shoulder_p: float = -1
     r_shoulder_p: float = -1
     l_armpit_p: float = -1

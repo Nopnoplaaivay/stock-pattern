@@ -29,9 +29,9 @@ if __name__ == '__main__':
     df = df.rename(columns={"OpenPrice": "open", "HighPrice": "high", "LowPrice": "low", "ClosePrice": "close"})
 
     detector = PatternDetector(df)
-    # detector.add_strategy(HeadAndShouldersStrategy(order=6))
+    detector.add_strategy(HeadAndShouldersStrategy(order=6))
     # detector.add_strategy(FlagPennantsStrategy(order=6))
-    detector.add_strategy(TripleTopStrategy(order=6))
+    # detector.add_strategy(TripleTopStrategy(order=6))
     # detector.add_strategy(DoubleTopStrategy(order=6))
 
     results = detector.run()

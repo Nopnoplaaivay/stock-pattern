@@ -22,7 +22,7 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
         return None
 
     # Condition 1
-    if data[pre_top] > 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] > data[pre_top]:
+    if data[pre_top] > 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] > data[l_trough] or data[pre_trough] > data[pre_top]:
         return None
 
     # Condition 2
@@ -113,7 +113,7 @@ def check_tb_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
         return None
 
     # Condition 1
-    if data[pre_top] < 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] < data[pre_top]:
+    if data[pre_top] < 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] < data[l_trough] or data[pre_trough] < data[pre_top]:
         return None
 
     # Condition 2

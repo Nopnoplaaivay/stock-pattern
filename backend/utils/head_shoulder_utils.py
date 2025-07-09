@@ -36,11 +36,12 @@ def compute_pattern_r2(data: np.array, pat: HSPattern):
 
 def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_find: bool = False) -> HSPattern:
     ''' Returns a HSPattern if found, or None if not found '''
-    # Unpack list
-    l_shoulder = extrema_indices[0]
-    l_armpit = extrema_indices[1]
-    head = extrema_indices[2]
-    r_armpit = extrema_indices[3]
+    pre_top = extrema_indices[0]
+    pre_trough = extrema_indices[1]
+    l_shoulder = extrema_indices[2]
+    l_armpit = extrema_indices[3]
+    head = extrema_indices[4]
+    r_armpit = extrema_indices[5]
 
     if i - r_armpit < 2:
         return None
@@ -48,18 +49,22 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     # Find right shoulder as max price since r_armpit
     r_shoulder = r_armpit + data[r_armpit + 1: i].argmax() + 1
 
-    # Head must be higher than shoulders
+    # Condition 1: Head must be higher than shoulders
     if data[head] <= max(data[l_shoulder], data[r_shoulder]):
         return None
 
-    # Balance rule. Shoulders are above the others midpoint.
+    # Condition 2: Trend Pre existence
+    if data[pre_top] > 0.5 * (data[l_shoulder] + data[l_armpit]) or data[pre_trough] > data[l_armpit] or data[pre_trough] > data[pre_top]:
+        return None
+
+    # Condition 3: Balance rule. Shoulders are above the others midpoint.
     # A shoulder's midpoint is the midpoint between the shoulder and armpit
     r_midpoint = 0.5 * (data[r_shoulder] + data[r_armpit])
     l_midpoint = 0.5 * (data[l_shoulder] + data[l_armpit])
     if data[l_shoulder] < r_midpoint or data[r_shoulder] < l_midpoint:
         return None
 
-    # Symmetry rule. time from shoulder to head are comparable
+    # Condition 4: Symmetry rule. time from shoulder to head are comparable
     r_to_h_time = r_shoulder - head
     l_to_h_time = head - l_shoulder
     if r_to_h_time > 2.5 * l_to_h_time or l_to_h_time > 2.5 * r_to_h_time:
@@ -98,12 +103,16 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
     pat = HSPattern(inverted=False)
 
+    pat.pre_top = pre_top
+    pat.pre_trough = pre_trough
     pat.l_shoulder = l_shoulder
     pat.r_shoulder = r_shoulder
     pat.l_armpit = l_armpit
     pat.r_armpit = r_armpit
     pat.head = head
 
+    pat.pre_top_p = data[pre_top]
+    pat.pre_trough_p = data[pre_trough]
     pat.l_shoulder_p = data[l_shoulder]
     pat.r_shoulder_p = data[r_shoulder]
     pat.l_armpit_p = data[l_armpit]
@@ -127,10 +136,12 @@ def check_hs_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
 def check_ihs_pattern(extrema_indices: List[int], data: np.array, i: int, early_find: bool = False) -> HSPattern:
     # Unpack list
-    l_shoulder = extrema_indices[0]
-    l_armpit = extrema_indices[1]
-    head = extrema_indices[2]
-    r_armpit = extrema_indices[3]
+    pre_top = extrema_indices[0]
+    pre_trough = extrema_indices[1]
+    l_shoulder = extrema_indices[2]
+    l_armpit = extrema_indices[3]
+    head = extrema_indices[4]
+    r_armpit = extrema_indices[5]
 
     if i - r_armpit < 2:
         return None
@@ -138,8 +149,12 @@ def check_ihs_pattern(extrema_indices: List[int], data: np.array, i: int, early_
     # Find right shoulder as max price since r_armpit
     r_shoulder = r_armpit + data[r_armpit + 1: i].argmin() + 1
 
-    # Head must be lower than shoulders
+    # Condition 1: Head must be lower than shoulders
     if data[head] >= min(data[l_shoulder], data[r_shoulder]):
+        return None
+
+    # Condition 2: Trend Pre existence
+    if data[pre_top] < 0.5 * (data[l_shoulder] + data[l_armpit]) or data[pre_trough] < data[l_armpit] or data[pre_trough] < data[pre_top]:
         return None
 
     # Balance rule. Shoulders are below the others midpoint.
@@ -194,12 +209,16 @@ def check_ihs_pattern(extrema_indices: List[int], data: np.array, i: int, early_
     # Pattern confirmed if here :)
     pat = HSPattern(inverted=True)
 
+    pat.pre_top = pre_top
+    pat.pre_trough = pre_trough
     pat.l_shoulder = l_shoulder
     pat.r_shoulder = r_shoulder
     pat.l_armpit = l_armpit
     pat.r_armpit = r_armpit
     pat.head = head
 
+    pat.pre_top_p = data[pre_top]
+    pat.pre_trough_p = data[pre_trough]
     pat.l_shoulder_p = data[l_shoulder]
     pat.r_shoulder_p = data[r_shoulder]
     pat.l_armpit_p = data[l_armpit]
@@ -215,9 +234,9 @@ def check_ihs_pattern(extrema_indices: List[int], data: np.array, i: int, early_
     pat.pattern_r2 = compute_pattern_r2(data, pat)
 
     pat.neck_slope = neck_slope
-    pat.head_width = head_width
-    pat.head_height = (data[l_armpit] + (head - l_armpit) * neck_slope) - data[head]
-    pat.pattern_r2 = compute_pattern_r2(data, pat)
+    # pat.head_width = head_width
+    # pat.head_height = (data[l_armpit] + (head - l_armpit) * neck_slope) - data[head]
+    # pat.pattern_r2 = compute_pattern_r2(data, pat)
 
     # if pat.pattern_r2 < 0.0:
     #    return None

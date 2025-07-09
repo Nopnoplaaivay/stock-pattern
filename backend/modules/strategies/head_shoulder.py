@@ -36,8 +36,8 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
         assert (order >= 1)
 
         last_is_top = False
-        recent_extrema = deque(maxlen=5)
-        recent_types = deque(maxlen=5)
+        recent_extrema = deque(maxlen=7)
+        recent_types = deque(maxlen=7)
 
         hs_lock = False
         ihs_lock = False
@@ -57,34 +57,34 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
                 hs_lock = False
                 last_is_top = False
 
-            if len(recent_extrema) < 5:
+            if len(recent_extrema) < 7:
                 continue
 
             hs_alternating = True
             ihs_alternating = True
 
             if last_is_top:
-                for j in range(2, 5):
+                for j in range(2, 7):
                     if recent_types[j] == recent_types[j - 1]:
                         ihs_alternating = False
 
-                for j in range(1, 4):
+                for j in range(1, 6):
                     if recent_types[j] == recent_types[j - 1]:
                         hs_alternating = False
 
-                ihs_extrema = list(recent_extrema)[1:5]
-                hs_extrema = list(recent_extrema)[0:4]
+                ihs_extrema = list(recent_extrema)[1:7]
+                hs_extrema = list(recent_extrema)[0:6]
             else:
-                for j in range(2, 5):
+                for j in range(2, 7):
                     if recent_types[j] == recent_types[j - 1]:
                         hs_alternating = False
 
-                for j in range(1, 4):
+                for j in range(1, 6):
                     if recent_types[j] == recent_types[j - 1]:
                         ihs_alternating = False
 
-                ihs_extrema = list(recent_extrema)[0:4]
-                hs_extrema = list(recent_extrema)[1:5]
+                ihs_extrema = list(recent_extrema)[0:6]
+                hs_extrema = list(recent_extrema)[1:7]
 
             if ihs_lock or not ihs_alternating:
                 ihs_pat = None
@@ -113,7 +113,7 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
         candle_data = price_df.copy()
         ticker = candle_data['ticker'].iloc[0]
         idx = candle_data.index
-        candle_data = candle_data.iloc[pat.start_i:pat.break_i + 1 + pad]
+        candle_data = candle_data.iloc[pat.pre_top - 10:pat.break_i + 1 + pad]
         neck_end_date = idx[pat.break_i]
 
         """Update df's label and sessions_num columns."""
@@ -137,18 +137,20 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
                 line=dict(width=1.2)
             )
         )
-
-        l0 = [(idx[pat.start_i], pat.neck_start), (idx[pat.l_shoulder], pat.l_shoulder_p)]
-        l1 = [(idx[pat.l_shoulder], pat.l_shoulder_p), (idx[pat.l_armpit], pat.l_armpit_p)]
-        l2 = [(idx[pat.l_armpit], pat.l_armpit_p), (idx[pat.head], pat.head_p)]
-        l3 = [(idx[pat.head], pat.head_p), (idx[pat.r_armpit], pat.r_armpit_p)]
-        l4 = [(idx[pat.r_armpit], pat.r_armpit_p), (idx[pat.r_shoulder], pat.r_shoulder_p)]
-        l5 = [(idx[pat.r_shoulder], pat.r_shoulder_p), (idx[pat.break_i], pat.neck_end)]
+        pre_trendline = [(idx[pat.pre_top - 10], candle_data.loc[idx[pat.pre_top - 10], "close"]), (idx[pat.pre_top], pat.pre_top_p)]
+        l0 = [(idx[pat.pre_top], pat.pre_top_p), (idx[pat.pre_trough], pat.pre_trough_p)]
+        l1 = [(idx[pat.pre_trough], pat.pre_trough_p), (idx[pat.l_shoulder], pat.l_shoulder_p)]
+        # l0 = [(idx[pat.start_i], pat.neck_start), (idx[pat.l_shoulder], pat.l_shoulder_p)]
+        l2 = [(idx[pat.l_shoulder], pat.l_shoulder_p), (idx[pat.l_armpit], pat.l_armpit_p)]
+        l3 = [(idx[pat.l_armpit], pat.l_armpit_p), (idx[pat.head], pat.head_p)]
+        l4 = [(idx[pat.head], pat.head_p), (idx[pat.r_armpit], pat.r_armpit_p)]
+        l5 = [(idx[pat.r_armpit], pat.r_armpit_p), (idx[pat.r_shoulder], pat.r_shoulder_p)]
+        l6 = [(idx[pat.r_shoulder], pat.r_shoulder_p), (idx[pat.break_i], pat.neck_end)]
         neck = [(idx[pat.start_i], pat.neck_start), (idx[pat.break_i], pat.neck_end)]
 
-        lines = [l0, l1, l2, l3, l4, l5, neck]
-        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF7675']
-        line_names = ['Start→L.Shoulder', 'L.Shoulder→L.Armpit', 'L.Armpit→Head',
+        lines = [pre_trendline, l0, l1, l2, l3, l4, l5, l6, neck]
+        colors = ['#4ECDC4', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#4ECDC4', '#FF7675']
+        line_names = ['Start→Pre.Top', 'Pre.Top→Pre.Trough', 'Pre.Trough→L.Shoulder', 'L.Shoulder→L.Armpit', 'L.Armpit→Head',
                       'Head→R.Armpit', 'R.Armpit→R.Shoulder', 'R.Shoulder→End', 'Neckline']
 
         for i, (line, color, name) in enumerate(zip(lines, colors, line_names)):
@@ -159,8 +161,8 @@ class HeadAndShouldersStrategy(BasePatternStrategy):
                     mode='lines',
                     line=dict(
                         color=color,
-                        width=3 if i != 6 else 2.5,
-                        dash='solid' if i != 6 else 'dash'
+                        width=3 if i != 8 else 2.5,
+                        dash='solid' if i != 8 else 'dash'
                     ),
                     name=name,
                     showlegend=False,
