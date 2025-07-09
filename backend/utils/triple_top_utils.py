@@ -6,10 +6,12 @@ from backend.modules.patterns import TripleTopPattern
 
 def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_find: bool = False) -> TripleTopPattern:
     """ Returns a TripleTopPattern if the pattern is confirmed, otherwise None. """
-    l_top = extrema_indices[0]
-    l_trough = extrema_indices[1]
-    m_top = extrema_indices[2]
-    r_trough = extrema_indices[3]
+    pre_top = extrema_indices[0]
+    pre_trough = extrema_indices[1]
+    l_top = extrema_indices[2]
+    l_trough = extrema_indices[3]
+    m_top = extrema_indices[4]
+    r_trough = extrema_indices[5]
 
     if i - r_trough < 2:
         return None
@@ -17,6 +19,10 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     # Find right shoulder as max price since r_armpit
     r_top = r_trough + data[r_trough + 1: i].argmax() + 1
     if data[r_top] < data[r_trough] or data[l_top] < data[l_trough]:
+        return None
+
+    # Condition 1
+    if data[pre_top] > 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] > data[pre_top]:
         return None
 
     # Condition 2
@@ -63,12 +69,16 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
     pat = TripleTopPattern(inverted=False)
 
+    pat.pre_top = pre_top
+    pat.pre_trough = pre_trough
     pat.l_top = l_top
     pat.r_top = r_top
     pat.l_trough = l_trough
     pat.r_trough = r_trough
     pat.m_top = m_top
 
+    pat.pre_top_p = data[pre_top]
+    pat.pre_trough_p = data[pre_trough]
     pat.l_top_p = data[l_top]
     pat.r_top_p = data[r_top]
     pat.l_trough_p = data[l_trough]
@@ -87,10 +97,12 @@ def check_tt_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
 def check_tb_pattern(extrema_indices: List[int], data: np.array, i: int, early_find: bool = False) -> TripleTopPattern:
     """ Returns a TripleTopPattern if the pattern is confirmed, otherwise None. """
-    l_top = extrema_indices[0]
-    l_trough = extrema_indices[1]
-    m_top = extrema_indices[2]
-    r_trough = extrema_indices[3]
+    pre_top = extrema_indices[0]
+    pre_trough = extrema_indices[1]
+    l_top = extrema_indices[2]
+    l_trough = extrema_indices[3]
+    m_top = extrema_indices[4]
+    r_trough = extrema_indices[5]
 
     if i - r_trough < 2:
         return None
@@ -98,6 +110,10 @@ def check_tb_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
     # Find right shoulder as max price since r_armpit
     r_top = r_trough + data[r_trough + 1: i].argmin() + 1
     if data[r_top] > data[r_trough] or data[l_top] > data[l_trough]:
+        return None
+
+    # Condition 1
+    if data[pre_top] < 0.5 * (data[l_top] + data[l_trough]) or data[pre_trough] < data[pre_top]:
         return None
 
     # Condition 2
@@ -143,12 +159,16 @@ def check_tb_pattern(extrema_indices: List[int], data: np.array, i: int, early_f
 
     pat = TripleTopPattern(inverted=True)
 
+    pat.pre_top = pre_top
+    pat.pre_trough = pre_trough
     pat.l_top = l_top
     pat.r_top = r_top
     pat.l_trough = l_trough
     pat.r_trough = r_trough
     pat.m_top = m_top
 
+    pat.pre_top_p = data[pre_top]
+    pat.pre_trough_p = data[pre_trough]
     pat.l_top_p = data[l_top]
     pat.r_top_p = data[r_top]
     pat.l_trough_p = data[l_trough]
