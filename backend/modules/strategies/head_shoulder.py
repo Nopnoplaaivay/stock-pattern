@@ -11,7 +11,7 @@ from backend.common.consts import Consts
 from backend.modules.patterns import HSPattern
 from backend.modules.base_strategies import BasePatternStrategy
 from backend.utils.rolling_window import rw_top, rw_bottom
-from backend.utils.hs_utils import check_hs_pattern, check_ihs_pattern
+from backend.utils.head_shoulder_utils import check_hs_pattern, check_ihs_pattern
 
 
 class HeadAndShouldersStrategy(BasePatternStrategy):

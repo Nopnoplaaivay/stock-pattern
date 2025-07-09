@@ -11,7 +11,7 @@ from backend.common.consts import Consts
 from backend.modules.patterns import TripleTopPattern
 from backend.modules.base_strategies import BasePatternStrategy
 from backend.utils.rolling_window import rw_top, rw_bottom
-from backend.utils.tt_utils import check_tt_pattern, check_tb_pattern
+from backend.utils.triple_top_utils import check_tt_pattern, check_tb_pattern
 
 
 class TripleTopStrategy(BasePatternStrategy):
@@ -138,18 +138,18 @@ class TripleTopStrategy(BasePatternStrategy):
             )
         )
 
-        l0 = [(idx[pat.start_i], pat.neck_start), (idx[pat.l_peak], pat.l_peak_p)]
-        l1 = [(idx[pat.l_peak], pat.l_peak_p), (idx[pat.l_trough], pat.r_trough_p)]
-        l2 = [(idx[pat.l_trough], pat.r_trough_p), (idx[pat.m_peak], pat.m_peak_p)]
-        l3 = [(idx[pat.m_peak], pat.m_peak_p), (idx[pat.r_trough], pat.r_trough_p)]
-        l4 = [(idx[pat.r_trough], pat.r_trough_p), (idx[pat.r_peak], pat.r_peak_p)]
-        l5 = [(idx[pat.r_peak], pat.r_peak_p), (idx[pat.break_i], pat.neck_end)]
+        l0 = [(idx[pat.start_i], pat.neck_start), (idx[pat.l_top], pat.l_top_p)]
+        l1 = [(idx[pat.l_top], pat.l_top_p), (idx[pat.l_trough], pat.r_trough_p)]
+        l2 = [(idx[pat.l_trough], pat.r_trough_p), (idx[pat.m_top], pat.m_top_p)]
+        l3 = [(idx[pat.m_top], pat.m_top_p), (idx[pat.r_trough], pat.r_trough_p)]
+        l4 = [(idx[pat.r_trough], pat.r_trough_p), (idx[pat.r_top], pat.r_top_p)]
+        l5 = [(idx[pat.r_top], pat.r_top_p), (idx[pat.break_i], pat.neck_end)]
         neck = [(idx[pat.start_i], pat.neck_start), (idx[pat.break_i], pat.neck_end)]
 
         lines = [l0, l1, l2, l3, l4, l5, neck]
         colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF7675']
-        line_names = ['Start→L.Shoulder', 'L.Shoulder→L.Armpit', 'L.Armpit→Head',
-                      'Head→R.Armpit', 'R.Armpit→R.Shoulder', 'R.Shoulder→End', 'Neckline']
+        line_names = ['Start→L.Top', 'L.Top→L.Trough', 'L.Trough→M.Top',
+                      'M.Top→R.Trough', 'R.Trough→R.Top', 'R.Top→End', 'Neckline']
 
         for i, (line, color, name) in enumerate(zip(lines, colors, line_names)):
             fig.add_trace(
@@ -168,8 +168,8 @@ class TripleTopStrategy(BasePatternStrategy):
                 )
             )
 
-        key_points_x = [idx[pat.l_peak], idx[pat.m_peak], idx[pat.r_peak]]
-        key_points_y = [pat.l_peak_p, pat.m_peak_p, pat.r_peak_p]
+        key_points_x = [idx[pat.l_top], idx[pat.m_top], idx[pat.r_top]]
+        key_points_y = [pat.l_top_p, pat.m_top_p, pat.r_top_p]
         key_labels = ['Left Top', 'Middle Top', 'Right Top']
         key_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
 

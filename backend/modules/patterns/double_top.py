@@ -2,14 +2,24 @@ from dataclasses import dataclass
 
 @dataclass
 class DoubleTopPattern:
-    first_peak: int  # Chỉ số thời gian của đỉnh đầu tiên
-    first_peak_price: float  # Giá tại đỉnh đầu tiên
-    trough: int  # Chỉ số thời gian của đáy giữa
-    trough_price: float  # Giá tại đáy giữa
-    second_peak: int  # Chỉ số thời gian của đỉnh thứ hai
-    second_peak_price: float  # Giá tại đỉnh thứ hai
-    neckline_start: int  # Điểm bắt đầu đường Neckline
-    neckline_end: int  # Điểm kết thúc đường Neckline
-    neckline_price: float  # Giá của đường Neckline
-    confirmed_at: int = -1  # Điểm xác nhận mẫu
-    confirmed_price: float = -1.0  # Giá xác nhận mẫu
+    inverted: bool
+
+    # Indices of the parts of the Double Top pattern
+    pre_top: int  = -1
+    pre_trough: int = -1
+    f_top: int = -1
+    f_trough: int = -1
+    s_top: int = -1
+
+    pre_top_p: float = -1
+    pre_trough_p: float = -1
+    f_top_p: float = -1
+    f_trough_p: float = -1
+    s_top_p: float = -1
+
+    start_i: int = -1
+    break_i: int = -1
+    break_p: float = -1.0
+
+    neck_start: float = -1
+    neck_end: float = -1

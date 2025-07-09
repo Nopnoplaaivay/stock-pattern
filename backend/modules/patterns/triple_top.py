@@ -5,16 +5,16 @@ class TripleTopPattern:
     inverted: bool
 
     # Indices of the parts of the Triple Top pattern
-    l_peak: int  = -1
-    r_peak: int = -1
+    l_top: int  = -1
+    r_top: int = -1
     l_trough: int = -1
     r_trough: int = -1
-    m_peak: int = -1
+    m_top: int = -1
 
     # Price of the parts of the Triple Top pattern
-    l_peak_p: float = -1
-    r_peak_p: float = -1
-    m_peak_p: float = -1
+    l_top_p: float = -1
+    r_top_p: float = -1
+    m_top_p: float = -1
     l_trough_p: float = -1
     r_trough_p: float = -1
 

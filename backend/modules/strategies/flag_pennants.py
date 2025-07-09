@@ -7,7 +7,7 @@ from backend.common.consts import Consts
 from backend.modules.patterns import FlagPennantPattern
 from backend.modules.base_strategies import BasePatternStrategy
 from backend.utils.rolling_window import rw_top, rw_bottom
-from backend.utils.fp_utils import check_bear_pattern_pips, check_bull_pattern_pips
+from backend.utils.flag_pennant_utils import check_bear_pattern_pips, check_bull_pattern_pips
 
 
 class FlagPennantsStrategy(BasePatternStrategy):

@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from backend.modules.common.repositories import StockRepo
 from backend.modules.data_explorer.corporate.repositories import TradingDataDailyRepo
@@ -6,7 +7,8 @@ from backend.modules.data_explorer.index_sector.repositories import DEISTradingD
 from backend.modules.strategies import (
     HeadAndShouldersStrategy,
     FlagPennantsStrategy,
-    TripleTopStrategy
+    TripleTopStrategy,
+    DoubleTopStrategy
 )
 from backend.modules.pattern_detector import PatternDetector
 
@@ -29,11 +31,17 @@ if __name__ == '__main__':
         df = df.set_index("date")
         df = df.sort_index()
         df = df.rename(columns={"OpenPrice": "open", "HighPrice": "high", "LowPrice": "low", "ClosePrice": "close"})
+        # df["close"] = np.log(df["close"])
+
+
+
 
         detector = PatternDetector(df)
         # detector.add_strategy(HeadAndShouldersStrategy(order=6))
         # detector.add_strategy(FlagPennantsStrategy(order=6))
-        detector.add_strategy(TripleTopStrategy(order=6))
+        # detector.add_strategy(TripleTopStrategy(order=6))
+        detector.add_strategy(DoubleTopStrategy(order=6))
+
 
         results = detector.run()
 
@@ -55,8 +63,14 @@ if __name__ == '__main__':
             for i, pat in enumerate(results["Triple Top"]):
                 tt_strategy.plot_pattern(price_df=df, pat=pat)
 
+        if "Double Top" in results:
+            first_dt_pattern = results["Double Top"][0]
+            dt_strategy = [s for s in detector.strategies if s.name == "Double Top"][0]
+            for i, pat in enumerate(results["Double Top"]):
+                dt_strategy.plot_pattern(price_df=df, pat=pat)
+
         all_patterns_df = pd.concat([all_patterns_df, df], axis=0)
         print(f"[DONE] Detecting patterns for stock: {stock}")
     # export all patterns df to csv
-    all_patterns_df.to_csv("all_patterns.csv", index=False)
+    # all_patterns_df.to_csv("all_patterns.csv", index=False)
 
